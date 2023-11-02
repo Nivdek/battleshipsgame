@@ -7,12 +7,8 @@ SIZE_OF_SHIPS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 NUM_OF_SHIPS = 10
 SHIP_POSITIONS = [[]]
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-# NUM_OF_SHIPS_SUNK (Use this if you can make program track ships else use NUM_OF_HITS to win (20 hits to win))
+# NUM_OF_SHIPS_SUNK = 0 (Maybe use for score if can find way to do this)
 
-
-
-print("Welcome to Battleships!")
-print("Your objective is to the sink the enemy fleet!\n")
 
 def create_grid():
     """
@@ -44,10 +40,10 @@ def create_grid():
         random_row = random.randint(0, rows - 1)
         random_col = random.randint(0, cols -1 )
         direction = random.choice(["up", "down", "left", "right"])
-        ship_size = SIZE_OF_SHIPS[0] #Not sure how to iterate through this to pull the correct ship sizes
+        ship_size = SIZE_OF_SHIPS[0] #Not sure how to iterate through this to pull the correct ship sizes  !!!!THIS FUNCTION NEEDS TO BE CHANGED BECAUSE THE COMPUTER CURRENTLY PLACES 10 4-LENGTH SHIPS
         if try_to_place_ships(random_row, random_col, direction, ship_size):
             num_of_ships_placed += 1
-            ship_size += 1 # Unsure if this is the correct way to loop through ship sizes.
+            ship_size[] += 1 # Unsure if this is the correct way to loop through ship sizes.
 
 
 
@@ -99,7 +95,9 @@ def try_to_place_ships(row, col, direction, length):
 
 
 def print_grid():
-    """Will print the grid with rows A-J and columns 0-9"""
+    """
+    Prints the grid with letters representing rows and numbers representing columns
+    """
     global GRID
     global ALPHABET
 
