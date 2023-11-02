@@ -3,7 +3,6 @@ import random
 # Global variables (Try to make score system count number of ships)
 GRID = [[]]
 GRID_SIZE = 10
-SIZE_OF_SHIPS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 NUM_OF_SHIPS = 10
 SHIP_POSITIONS = [[]]
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -18,8 +17,7 @@ def create_grid():
     global GRID
     global GRID_SIZE
     global NUM_OF_SHIPS
-    global SHIP_POSITIONS
-    global SIZE_OF_SHIPS
+    global SHIP_POSITIONS 
 
     random.seed()
 
@@ -31,21 +29,21 @@ def create_grid():
         for c in range(cols):
             row.append("~")
         GRID.append(row)
-
+    SHIP_POSITIONS = []
     num_of_ships_placed = 0
 
-    SHIP_POSITIONS = []
-    
-    while num_of_ships_placed != NUM_OF_SHIPS:
-        random_row = random.randint(0, rows - 1)
-        random_col = random.randint(0, cols -1 )
-        direction = random.choice(["up", "down", "left", "right"])
-        ship_size = SIZE_OF_SHIPS[0] #Not sure how to iterate through this to pull the correct ship sizes  !!!!THIS FUNCTION NEEDS TO BE CHANGED BECAUSE THE COMPUTER CURRENTLY PLACES 10 4-LENGTH SHIPS
-        if try_to_place_ships(random_row, random_col, direction, ship_size):
-            num_of_ships_placed += 1
-            ship_size += 1
-            # Unsure if this is the correct way to loop through ship sizes. 
-
+    size_of_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+    num_of_ships_placed = 0
+    while num_of_ships_placed != len(size_of_ships):
+        for ship_size in size_of_ships:
+            placed = False
+            while not placed:
+                random_row = random.randint(0, rows - 1)
+                random_col = random.randint(0, cols - 1)
+                direction = random.choice(["up", "down", "left", "right"])
+                if try_to_place_ships(random_row, random_col, direction, ship_size):
+                    placed = True
+                    num_of_ships_placed += 1
 
 
 def place_ships(start_row, end_row, start_col, end_col):
@@ -142,7 +140,7 @@ def print_cpu_board():
 def print_player_board():
     """
     This function prints out the player board with ship placement visible to the player
-    Maybe make one "hidden" internal board to process data and print one board as a visual representation?
+    Only one player board is needed as location of ships are to be shown.
     """
     pass
 
