@@ -11,8 +11,7 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def create_grid():
     """
-    Function to create a 10x10 grid and randomly place ships. (Try to get ship_size to iterate through SIZE_OF_SHIPS else change ship_size to be a randomized value just like the rest)
-    Going to need a separate function to check if placement of ships is valid
+    Function creates a 10x10 grid and places 10 ships of predetermined sizes in a random fashion on said grid.
     """
     global GRID
     global GRID_SIZE
@@ -97,10 +96,19 @@ def print_grid():
     """
     Prints the grid with letters representing rows and numbers representing columns
     """
+    
+
+
+def print_cpu_board():
+    """
+    This function prints out the cpu board but keeps the placement of ships visually hidden
+    Maybe make one "hidden" internal board to process data and print one board as a visual representation?
+    """
     global GRID
     global ALPHABET
 
-    debug_mode = True
+    create_grid()
+    debug_mode = False
 
     ALPHABET = ALPHABET[0: len(GRID) + 1]
 
@@ -111,7 +119,7 @@ def print_grid():
                 if debug_mode:
                     print("O", end=" ")
                 else:
-                    print(".", end=" ")
+                    print("~", end=" ")
             else:
                 print(GRID[row][col], end=" ")
         print("")
@@ -122,27 +130,31 @@ def print_grid():
     print("")
 
 
-
-def main():
-    create_grid()
-    print_grid()
-
-main()
-
-def print_cpu_board():
-    """
-    This function prints out the cpu board but keeps the placement of ships visually hidden
-    Maybe make one "hidden" internal board to process data and print one board as a visual representation?
-    """
-    pass
-
-
 def print_player_board():
     """
     This function prints out the player board with ship placement visible to the player
     Only one player board is needed as location of ships are to be shown.
     """
-    pass
+    global GRID
+    global ALPHABET
+
+    create_grid()
+
+    ALPHABET = ALPHABET[0: len(GRID) + 1]
+
+    for row in range(len(GRID)):
+        print(ALPHABET[row], end=") ")
+        for col in range(len(GRID[row])):
+            if GRID[row][col] == "O":
+                print("O", end=" ")
+            else:
+                print("~", end=" ")
+        print("")
+
+    print("  ", end=" ")
+    for i in range(len(GRID[0])):
+        print(str(i), end=" ")
+    print("")
 
 
 def score_system():
@@ -152,4 +164,10 @@ def score_system():
     pass
 
 
+def main():
+    print_cpu_board()
+    print("+-+-+-+-+-+-+-+-+-+-+-+")
+    print_player_board()    
+
+main()
 
