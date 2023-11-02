@@ -33,17 +33,20 @@ def create_grid():
         row = []
         for c in range(cols):
             row.append("~")
-        grid.append(row)
+        GRID.append(row)
 
     num_of_ships_placed = 0
 
-    SHIP_POSITIONS []
+    SHIP_POSITIONS = []
     
     while num_of_ships_placed != NUM_OF_SHIPS:
         random_row = random.randint(0, rows - 1)
-        random_col = random.randint(0 cols -1 )
+        random_col = random.randint(0, cols -1 )
         direction = random.choice(["up", "down", "left", "right"])
         ship_size = SIZE_OF_SHIPS[0]
+        if try_to_place_ship_on_grid(random_row, random_col, direction, ship_size):
+            num_of_ships_placed += 1
+            ship_size += 1 # Unsure if this is the correct way to loop through ship sizes.
     pass
 
 
