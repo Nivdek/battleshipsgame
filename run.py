@@ -43,7 +43,8 @@ def create_grid():
         ship_size = SIZE_OF_SHIPS[0] #Not sure how to iterate through this to pull the correct ship sizes  !!!!THIS FUNCTION NEEDS TO BE CHANGED BECAUSE THE COMPUTER CURRENTLY PLACES 10 4-LENGTH SHIPS
         if try_to_place_ships(random_row, random_col, direction, ship_size):
             num_of_ships_placed += 1
-            ship_size[] += 1 # Unsure if this is the correct way to loop through ship sizes.
+            ship_size += 1
+            # Unsure if this is the correct way to loop through ship sizes. 
 
 
 
