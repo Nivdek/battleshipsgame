@@ -6,7 +6,7 @@ GRID = [[]]
 GRID_SIZE = 10
 SIZE_OF_SHIPS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 NUM_OF_SHIPS = 10
-SHIP_POSITIONS = [[]]
+SHIP_POSITIONS = []
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -127,5 +127,6 @@ def print_grid():
 def main():
     create_grid()
     print_grid()
+    print(SHIP_POSITIONS)
 
 main()
