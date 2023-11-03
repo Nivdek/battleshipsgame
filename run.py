@@ -1,17 +1,70 @@
+
 import random
 
+# Global variables (Try to make score system count number of ships)
 GRID = [[]]
 GRID_SIZE = 10
-NUM_OF_SHIPS = 10
-SHIP_POSITIONS = []
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 SIZE_OF_SHIPS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+NUM_OF_SHIPS = 10
+SHIP_POSITIONS = [[]]
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
+def place_ships(start_row, end_row, start_col, end_col):
+    """
+    Checks the row and column values to make sure they are not previously occupied
+    """
+    global GRID
+    global SHIP_POSITIONS
+
+    all_valid = True
+    for r in range(start_row, end_row):
+        for c in range(start_col, end_col):
+            if GRID[r][c] != "~":
+                all_valid = False
+                break
+    if all_valid:
+        SHIP_POSITIONS.append([start_row, end_row, start_col, end_col])
+        for r in range(start_row, end_row):
+            for c in range(start_col, end_col):
+                GRID[r][c] = "O"
+    return all_valid
+
+
+def try_to_place_ships(row, col, direction, length):
+    """
+    Function will try designate a location within the grid for a ship using a helper method to make sure the location is not already occupied
+    """
+    global GRID_SIZE
+
+    start_row, end_row, start_col, end_col = row, row + 1, col, col + 1
+    if direction == "left":
+        if col - length < 0:
+            return False
+        start_col = col - length + 1
+
+    elif direction == "right":
+        if col + length >= GRID_SIZE:
+            return False
+        end_col = col + length
+
+    elif direction == "up":
+        if row - length < 0:
+            return False
+        start_row = row - length + 1
+
+    elif direction == "down":
+        if row + length >= GRID_SIZE:
+            return False
+        end_row = row + length
+
+    return place_ships(start_row, end_row, start_col, end_col)
 
 
 def create_grid():
     """
-    Function creates a 10x10 GRID and places 10 ships of predetermined sizes in a random fashion on said GRID.
+    Function to create a 10x10 grid and randomly place ships. (Try to get ship_size to iterate through SIZE_OF_SHIPS else change ship_size to be a randomized value just like the rest)
+    Going to need a separate function to check if placement of ships is valid
     """
     global GRID
     global GRID_SIZE
@@ -41,60 +94,9 @@ def create_grid():
             num_of_ships_placed += 1
 
 
-def place_ships(start_row, end_row, start_col, end_col):
-    """
-    Checks the row and column values to make sure they are not previously occupied
-    """
-    global GRID
-    global SHIP_POSITIONS
-
-    all_valid = True
-    for r in range(start_row, end_row):
-        for c in range(start_col, end_col):
-            if GRID[r][c] != ".":
-                all_valid = False
-                break
-    if all_valid:
-        SHIP_POSITIONS.append([start_row, end_row, start_col, end_col])
-        for r in range(start_row, end_row):
-            for c in range(start_col, end_col):
-                GRID[r][c] = "O"
-    return all_valid
-
-
-def try_to_place_ships(row, col, direction, length):
-    """
-    Function will try designate a location within the GRID for a ship using a helper method to make sure the location is not already occupied
-    """
-    global GRID_SIZE
-
-    start_row, end_row, start_col, end_col = row, row + 1, col, col + 1
-    if direction == "left":
-        if col - length < 0:
-            return False
-        start_col = col - length + 1
-
-    elif direction == "right":
-        if col + length >= GRID_SIZE:
-            return False
-        end_col = col + length
-
-    elif direction == "up":
-        if row - length < 0:
-            return False
-        start_row = row - length + 1
-
-    elif direction == "down":
-        if row + length >= GRID_SIZE:
-            return False
-        end_row = row + length
-
-    return place_ships(start_row, end_row, start_col, end_col)
-
-
 def print_grid():
     """
-    Prints the GRID with letters representing rows and numbers representing columns
+    Prints the grid with letters representing rows and numbers representing columns
     """
     global GRID
     global ALPHABET
@@ -119,6 +121,7 @@ def print_grid():
     for i in range(len(GRID[0])):
         print(str(i), end=" ")
     print("")
+
 
 
 def main():
