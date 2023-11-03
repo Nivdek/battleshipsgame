@@ -18,16 +18,16 @@ def place_ships(start_row, end_row, start_col, end_col):
     global SHIP_POSITIONS
 
     all_valid = True
-    for r in range(start_row, end_row):
-        for c in range(start_col, end_col):
-            if GRID[r][c] != "~":
+    for row in range(start_row, end_row):
+        for column in range(start_col, end_col):
+            if GRID[row][column] != "~":
                 all_valid = False
                 break
     if all_valid:
         SHIP_POSITIONS.append([start_row, end_row, start_col, end_col])
-        for r in range(start_row, end_row):
-            for c in range(start_col, end_col):
-                GRID[r][c] = "O"
+        for row in range(start_row, end_row):
+            for column in range(start_col, end_col):
+                GRID[row][column] = "O"
     return all_valid
 
 
@@ -63,8 +63,7 @@ def try_to_place_ships(row, col, direction, length):
 
 def create_grid():
     """
-    Function to create a 10x10 grid and randomly place ships. (Try to get ship_size to iterate through SIZE_OF_SHIPS else change ship_size to be a randomized value just like the rest)
-    Going to need a separate function to check if placement of ships is valid
+    Function to create a 10x10 grid and randomly place ships.
     """
     global GRID
     global GRID_SIZE
@@ -77,9 +76,9 @@ def create_grid():
     rows, cols = (GRID_SIZE, GRID_SIZE)
 
     GRID = []
-    for r in range(rows):
+    for row in range(rows):
         row = []
-        for c in range(cols):
+        for column in range(cols):
             row.append("~")
         GRID.append(row)
 
@@ -123,10 +122,10 @@ def print_grid():
     print("")
 
 
-
 def main():
     create_grid()
+    print("X = Hit. @ = Miss. ~ = ?\n______________________")
     print_grid()
+    print("Welcome to Battleships.\nYour objective is to sink the enemy fleet.")
     print(SHIP_POSITIONS)
-
 main()
