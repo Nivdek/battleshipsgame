@@ -1,7 +1,6 @@
-
 import random
 
-# Global variables (Try to make score system count number of ships)
+# Global variables
 GRID = [[]]
 GRID_SIZE = 10
 SIZE_OF_SHIPS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
@@ -14,19 +13,20 @@ GAME_OVER = False
 
 def place_ships(start_row, end_row, start_col, end_col):
     """
-    Checks the row and column values to make sure they are not already occupied
+    Checks the row and column values to make sure
+    they are not already occupied
     """
     global GRID
     global SHIP_POSITIONS
 
     all_valid = True
-    # for loop makes sure all the cells where a ship is trying to be placed is equal to Water
+    # Makes sure ships don't overlap
     for row in range(start_row, end_row):
         for col in range(start_col, end_col):
             if GRID[row][col] != "~":
                 all_valid = False
                 break
-    # if condition updates the value of the grids cells to O if a ship was succesfully placed there
+    # Logs position of ships
     if all_valid:
         SHIP_POSITIONS.append([start_row, end_row, start_col, end_col])
         for row in range(start_row, end_row):
@@ -37,8 +37,10 @@ def place_ships(start_row, end_row, start_col, end_col):
 
 def try_to_place_ships(row, col, direction, length):
     """
-    Function will try designate a location within the grid for a ship using a helper method to make sure the location is not already occupied.
-    It makes sure all ships have their starting and ending positional values stay within the confines of the defined grid size.
+    Function will try designate a location within the grid for a ship using a
+    helper method to make sure the location is not already occupied.
+    It makes sure all ships have their starting and ending positional
+    values stay within the confines of the defined grid size.
     """
     global GRID_SIZE
 
@@ -77,7 +79,7 @@ def create_grid():
     global SIZE_OF_SHIPS
 
     random.seed()
-    # Creates a grid and assigns the games symbol for Water as a value to them
+    # Creates a grid
     rows, cols = (GRID_SIZE, GRID_SIZE)
     GRID = []
     for row in range(rows):
@@ -88,21 +90,22 @@ def create_grid():
 
     SHIP_POSITIONS = []
     num_of_ships_placed = 0
-    # While loop to place as many ships as are stated in the NUM_OF_SHIPS variable. meant to be defined at game start.
+    # Place as many ships as are stated in the NUM_OF_SHIPS variable.
     while num_of_ships_placed != NUM_OF_SHIPS:
         random_row = random.randint(0, rows - 1)
         random_col = random.randint(0, cols - 1)
         direction = random.choice(["left", "right", "up", "down"])
-        # This uses the SIZE_OF_SHIPS list to determine size of ships, this is meant to be determined at the start of the game.
+        # Uses the SIZE_OF_SHIPS list to determine sizes of ships.
         ship_size = SIZE_OF_SHIPS[num_of_ships_placed]
-        # Uses try_to_place_ships to make sure ships are placed inside of the grid and do not overlap.
+        # Makes sure ship's dont overlap.
         if try_to_place_ships(random_row, random_col, direction, ship_size):
             num_of_ships_placed += 1
 
 
 def print_grid():
     """
-    Prints the grid with letters representing rows and numbers representing columns
+    Prints the grid with letters representing rows
+    and numbers representing columns
     """
     global GRID
     global ALPHABET
@@ -115,7 +118,7 @@ def print_grid():
         print(ALPHABET[row], end=") ")
         for col in range(len(GRID[row])):
             if GRID[row][col] == "O":
-                # this debug feature lets you set debug_mode to true in order to see the positions of ships printed on the board.
+                # When true the ship positions are visible.
                 if debug_mode:
                     print("O", end=" ")
                 else:
@@ -132,7 +135,8 @@ def print_grid():
 
 def shot_placement():
     """
-    Contains input for where the player wants to shoot and also handles any faulty input attempts.
+    Contains input for where the player wants to shoot
+    and also handles any faulty input attempts.
     """
     global ALPHABET
     global GRID
@@ -140,8 +144,7 @@ def shot_placement():
     valid_placement = False
     row, col = -1, -1
 
-
-    # While loop to make sure user inputs the correct format for his shot, transforms input to uppercase to match the values of ALPHABET.
+    # Makes sure user gives correct input.
     while not valid_placement:
         placement = input("Pick a square to bomb, such as C7 or D5: ")
         placement = placement.upper()
@@ -159,16 +162,18 @@ def shot_placement():
             print("Please use the correct format, such as C7 or D5.")
             continue
         if GRID[row][col] == "#" or GRID[row][col] == "X":
-            print("You have already bombed this location. Choose a new target!")
+            print("You've already bombed this location. Choose a new target!")
             continue
         if GRID[row][col] == "~" or GRID[row][col] == "O":
             valid_placement = True
 
     return row, col
 
+
 def sunk_ships(row, col):
     """
-    Checks if all parts of a ship has been hit and if so returns True to be used for increasing the number of ships sunk.
+    Checks if all parts of a ship has been hit and if so
+    returns True to be used for increasing the number of ships sunk.
     """
     global SHIP_POSITIONS
     global GRID
@@ -225,16 +230,16 @@ def main():
     """
     Main application containing the game loop
     """
-    print("Welcome to Battleships.\nYour objective is to sink the enemy fleet.")
+    print("Welcome to Battleships.\nYour mission is to sink the enemy fleet.")
     print("X = Hit. @ = Miss. ~ = ?\n______________________")
     create_grid()
-    
-    while GAME_OVER is False: 
+
+    while GAME_OVER is False:
         print_grid()
-        print(f"There are {NUM_OF_SHIPS - NUM_OF_SHIPS_SUNK} enemy ships remaining.")
+        print(f"There are {NUM_OF_SHIPS - NUM_OF_SHIPS_SUNK} ships remaining.")
         print_shot()
         print("----------------------------------")
         check_win()
-    
+
 
 main()
