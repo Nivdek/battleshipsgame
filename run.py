@@ -132,8 +132,15 @@ def shot_placement():
     """
     Contains input for where the player wants to shoot and also handles any faulty input attempts.
     """
-    
+    global ALPHABET
+    global GRID
 
+    valid_placement = False
+    row = -1
+    col = -1
+    while valid_placement is False:
+        placement = input("Pick a square to bomb")
+        placement = placement.upper()
 
 def sunk_ships():
     """
@@ -153,4 +160,5 @@ def main():
     print_grid()
     print("Welcome to Battleships.\nYour objective is to sink the enemy fleet.")
     print(SHIP_POSITIONS)
+    #shot_placement()
 main()
