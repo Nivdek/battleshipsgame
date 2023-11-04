@@ -107,7 +107,7 @@ def print_grid():
     global GRID
     global ALPHABET
 
-    debug_mode = True
+    debug_mode = False
 
     ALPHABET = ALPHABET[0: len(GRID) + 1]
     # for loop to append a letter infront of every row of the grid.
