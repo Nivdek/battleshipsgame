@@ -85,6 +85,7 @@ def create_grid():
             row.append("~")
         GRID.append(row)
 
+    SHIP_POSITIONS = []
     num_of_ships_placed = 0
     # While loop to place as many ships as are stated in the NUM_OF_SHIPS variable. meant to be defined at game start.
     while num_of_ships_placed != NUM_OF_SHIPS:
@@ -108,12 +109,12 @@ def print_grid():
     debug_mode = True
 
     ALPHABET = ALPHABET[0: len(GRID) + 1]
-    # for loop to apped a letter infront of every row of the grid.
+    # for loop to append a letter infront of every row of the grid.
     for row in range(len(GRID)):
         print(ALPHABET[row], end=") ")
         for col in range(len(GRID[row])):
             if GRID[row][col] == "O":
-                # this debug feature lets you just debug_mode to true in order to see the positions of ships printed on the board.
+                # this debug feature lets you set debug_mode to true in order to see the positions of ships printed on the board.
                 if debug_mode:
                     print("O", end=" ")
                 else:
@@ -126,16 +127,6 @@ def print_grid():
     for i in range(len(GRID[0])):
         print(str(i), end=" ")
     print("")
-
-
-def valid_format(placement):
-    return len(placement) == 2
-
-def valid_row(row, GRID_SIZE):
-    return 0 <= row < GRID_SIZE
-
-def valid col(col, GRID_SIZE):
-    return 0 <= col < GRID_SIZE
 
 
 def shot_placement():
@@ -152,17 +143,24 @@ def shot_placement():
     # While loop to make sure user inputs the correct format for his shot, transforms input to uppercase to match the values of ALPHABET.
     while not valid_placement:
         placement = input("Pick a square to bomb, such as C7 or D5: ")
-        if not valid_format(placement):
+        placement = placement.upper()
+
+        if len(placement) != 2:
             print("Please use the correct format, such as C7 or D5.")
             continue
-        row, col = ALPHABET.find(placement[0]), int(placement[1])
-        if not (row.isalpha() and valid_row(row, GRID_SIZE) and valid_col(col, GRID_SIZE)):
-            print("Incorrect row or column.")
+        row, col = placement[0], placement[1]
+        if not (row.isalpha() and col.isnumeric()):
+            print("Please use the correct format, such as C7 or D5.")
             continue
-        if GRID[row][col] in {"#", "X"}:
-            print("You have already bombed this location, pick another one!")
+        row = ALPHABET.find(row)
+        col = int(col)
+        if not (0 <= row < GRID_SIZE) or not (0 <= col < GRID_SIZE):
+            print("Please use the correct format, such as C7 or D5.")
             continue
-        elif GRID[row][col] == "~" or GRID[row][col] == "0":
+        if GRID[row][col] == "#" or GRID[row][col] == "X":
+            print("You have already bombed this location. Choose a new target!")
+            continue
+        if GRID[row][col] == "~" or GRID[row][col] == "O":
             valid_placement = True
 
     return row, col
