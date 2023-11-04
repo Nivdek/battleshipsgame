@@ -9,6 +9,7 @@ NUM_OF_SHIPS = 10
 SHIP_POSITIONS = [[]]
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUM_OF_SHIPS_SUNK = 0
+GAME_OVER = False
 
 
 def place_ships(start_row, end_row, start_col, end_col):
@@ -21,16 +22,16 @@ def place_ships(start_row, end_row, start_col, end_col):
     all_valid = True
     # for loop makes sure all the cells where a ship is trying to be placed is equal to Water
     for row in range(start_row, end_row):
-        for column in range(start_col, end_col):
-            if GRID[row][column] != "~":
+        for col in range(start_col, end_col):
+            if GRID[row][col] != "~":
                 all_valid = False
                 break
     # if condition updates the value of the grids cells to O if a ship was succesfully placed there
     if all_valid:
         SHIP_POSITIONS.append([start_row, end_row, start_col, end_col])
         for row in range(start_row, end_row):
-            for column in range(start_col, end_col):
-                GRID[row][column] = "O"
+            for col in range(start_col, end_col):
+                GRID[row][col] = "O"
     return all_valid
 
 
@@ -165,23 +166,75 @@ def shot_placement():
 
     return row, col
 
-def sunk_ships():
+def sunk_ships(row, col):
     """
-    Contains a check to see if a ship has been sunk.
+    Checks if all parts of a ship has been hit and if so returns True to be used for increasing the number of ships sunk.
     """
+    global SHIP_POSITIONS
+    global GRID
+
+    for position in SHIP_POSITIONS:
+        start_row = position[0]
+        end_row = position[1]
+        start_col = position[2]
+        end_col = position[3]
+        if start_row <= row <= end_row and start_col <= col <= end_col:
+            for r in range(start_row, end_row):
+                for c in range(start_col, end_col):
+                    if GRID[r][c] != "X":
+                        return False
+    return True
 
 
 def print_shot():
     """
     Prints the placement of your shot on the board.
     """
+    global GRID
+    global NUM_OF_SHIPS_SUNK
+
+    row, col = shot_placement()
+
+    if GRID[row][col] == "~":
+        print("No enemy in this location.")
+        GRID[row][col] = "#"
+    elif GRID[row][col] == "O":
+        print("You hit an an enemy!", end=" ")
+        GRID[row][col] = "X"
+        if sunk_ships(row, col):
+            print("The enemy sunk!")
+            NUM_OF_SHIPS_SUNK += 1
+        else:
+            print("It damaged the enemy ship!")
+
+
+def check_win():
+    """
+    Checks whether all enemy ships have been sunk and if so it's game over.
+    """
+    global NUM_OF_SHIPS_SUNK
+    global NUM_OF_SHIPS
+    global GAME_OVER
+
+    if NUM_OF_SHIPS == NUM_OF_SHIPS_SUNK:
+        print("The entire fleet has been wiped out. You are victorious!")
+        GAME_OVER = True
 
 
 def main():
-    create_grid()
-    print("X = Hit. @ = Miss. ~ = ?\n______________________")
-    print_grid()
+    """
+    Main application containing the game loop
+    """
     print("Welcome to Battleships.\nYour objective is to sink the enemy fleet.")
-    print(SHIP_POSITIONS)
-    shot_placement()
+    print("X = Hit. @ = Miss. ~ = ?\n______________________")
+    create_grid()
+    
+    while GAME_OVER is False: 
+        print_grid()
+        print(f"There are {NUM_OF_SHIPS - NUM_OF_SHIPS_SUNK} enemy ships remaining.")
+        print_shot()
+        print("----------------------------------")
+        check_win()
+    
+
 main()
