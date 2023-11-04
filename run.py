@@ -128,6 +128,16 @@ def print_grid():
     print("")
 
 
+def valid_format(placement):
+    return len(placement) == 2
+
+def valid_row(row, GRID_SIZE):
+    return 0 <= row < GRID_SIZE
+
+def valid col(col, GRID_SIZE):
+    return 0 <= col < GRID_SIZE
+
+
 def shot_placement():
     """
     Contains input for where the player wants to shoot and also handles any faulty input attempts.
@@ -136,15 +146,24 @@ def shot_placement():
     global GRID
 
     valid_placement = False
-    row = -1
-    col = -1
+    row, col = -1, -1
+
+
     # While loop to make sure user inputs the correct format for his shot, transforms input to uppercase to match the values of ALPHABET.
-    while valid_placement is False:
+    while not valid_placement:
         placement = input("Pick a square to bomb, such as C7 or D5: ")
-        placement = placement.upper()
-        if len(placement) <= 0 or len(placement) > 2:
-            print("Please use the correct format, such as C7 or D5:")
+        if not valid_format(placement):
+            print("Please use the correct format, such as C7 or D5.")
             continue
+        row, col = ALPHABET.find(placement[0]), int(placement[1])
+        if not (row.isalpha() and valid_row(row, GRID_SIZE) and valid_col(col, GRID_SIZE)):
+            print("Incorrect row or column.")
+            continue
+        if GRID[row][col] in {"#", "X"}:
+            print("You have already bombed this location, pick another one!")
+            continue
+        elif GRID[row][col] == "~" or GRID[row][col] == "0":
+            valid_placement = True
 
     return row, col
 
@@ -166,5 +185,5 @@ def main():
     print_grid()
     print("Welcome to Battleships.\nYour objective is to sink the enemy fleet.")
     print(SHIP_POSITIONS)
-    #shot_placement()
+    shot_placement()
 main()
