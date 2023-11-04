@@ -138,9 +138,15 @@ def shot_placement():
     valid_placement = False
     row = -1
     col = -1
+    # While loop to make sure user inputs the correct format for his shot, transforms input to uppercase to match the values of ALPHABET.
     while valid_placement is False:
-        placement = input("Pick a square to bomb")
+        placement = input("Pick a square to bomb, such as C7 or D5: ")
         placement = placement.upper()
+        if len(placement) <= 0 or len(placement) > 2:
+            print("Please use the correct format, such as C7 or D5:")
+            continue
+
+    return row, col
 
 def sunk_ships():
     """
